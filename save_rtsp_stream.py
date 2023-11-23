@@ -32,7 +32,7 @@ args = vars(ap.parse_args())
 if args.get("video", None) is None:
     Video_Path = easygui.fileopenbox()
     if Video_Path is None: Video_Path = 0 # connect to webcam
-# otherwise, we are reading from a video file
+# otherwise, we are reading from a ip camera
 else:
     Video_Path = args["video"]
 vs = cv2.VideoCapture(Video_Path)
