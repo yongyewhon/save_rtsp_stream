@@ -17,6 +17,7 @@ Run save_rtsp_stream.py with required arguments
 
 Try save_rtsp_stream.py --help to view the arguments
 
+
 optional arguments:
  
   -h, --help            show this help message and exit
@@ -29,6 +30,7 @@ optional arguments:
   
   -s SIZE, --size SIZE  video resolution (width,height), None=keep the same
                         resolution
+
 
 The default save video format is mp4v and keep the same resolution with the streaming video
 
