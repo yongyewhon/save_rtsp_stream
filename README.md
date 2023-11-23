@@ -8,6 +8,7 @@ pip install esaygui
 
 # Requirement
 Python 3.x
+
 Opencv 3.x or above ( pip install opencv-python )
 
 # Usage
