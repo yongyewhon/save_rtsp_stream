@@ -51,4 +51,4 @@ ESC to quit the program
 
 "S" or "s" to stop the recording
 
-The vidoe files are stored at inside the record folder
+The video files are stored at inside the record folder
