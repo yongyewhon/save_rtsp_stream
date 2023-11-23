@@ -41,7 +41,7 @@ python save_rtsp_stream.py to select vidoe file from drive
 
 eg: python save_rtsp_stream.py --video rtsp://admin:sl888888@10.1.1.85:554 to connect with IP camera
 
-eg: python save_rtsp_stream.py --video rtsp://admin:sl888888@10.1.1.85:554 --format 2 -- size (1024,786) to customize the video format and size
+eg: python save_rtsp_stream.py --video rtsp://admin:sl888888@10.1.1.85:554 --format 2 --size (1024,786) to customize the video format and size
 
 # Keyboard function:
 
