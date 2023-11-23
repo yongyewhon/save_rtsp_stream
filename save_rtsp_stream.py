@@ -12,16 +12,15 @@ import os
 import easygui
 
 Display_Resolution = (800, 600)
-if not os.path.exists("./record"): os.makedirs("./record")
-Video_Name = "./record/blank.mp4"
-out = cv2.VideoWriter(Video_Name, cv2.VideoWriter_fourcc('m','p','4','v'), 10, Display_Resolution)
-out.release()
+out = None
 Video_Path = None
 fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
-FPS = 10
+#fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
+FPS = 15
 Record = True
 Label = "Record"
 Count = 10
+if not os.path.exists("./record"): os.makedirs("./record")
 
 ap = argparse.ArgumentParser(description="save_rstp_stream")
 ap.add_argument("-v", "--video", help="path to the video file")
@@ -32,30 +31,20 @@ args = vars(ap.parse_args())
 # if the video argument is None, then we are reading from video file from easygui
 if args.get("video", None) is None:
     Video_Path = easygui.fileopenbox()
-    if Video_Path is None: Video_Path = 0
+    if Video_Path is None: Video_Path = 0 # connect to webcam
 # otherwise, we are reading from a video file
 else:
     Video_Path = args["video"]
 vs = cv2.VideoCapture(Video_Path)
-WIDTH = int(vs.get(cv2.CAP_PROP_FRAME_WIDTH))
-HEIGHT = int(vs.get(cv2.CAP_PROP_FRAME_HEIGHT))
+WIDTH, HEIGHT= int(vs.get(cv2.CAP_PROP_FRAME_WIDTH)), int(vs.get(cv2.CAP_PROP_FRAME_HEIGHT))
 print(Video_Path)
 
-if args.get("format", None) is not None:
-    if format == 1:
-        fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
-        print("FourCC code MJPG")
-    elif format == 2:
-        fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-        print("FourCC code MP4V")
-    else: print("FourCC code MJPG")
-else: print("FourCC code MJPG")
+if args["format"] == 1: fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+elif args["format"] == 2: fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
 
 if args.get("size", None) is not None:
     value = args["size"].replace("(", "").replace(")", "").split(",")
-    if len(value) > 1:
-        WIDTH = int(value[0])
-        HEIGHT = int(value[1])
+    if len(value) > 1: WIDTH, HEIGHT = int(value[0]), int(value[1])
 print(WIDTH, HEIGHT, FPS)
 
 ret, frame = vs.read()
@@ -67,8 +56,8 @@ while (ret):
     if ret is True:
         if Record is True:
             # save image
-            if out.isOpened() is False:
-                Video_Name = "./record/" + datetime.datetime.now().strftime("%Y-%m-%d_%H;%M;%S") + ".mp4"
+            if out is None or out.isOpened() is False:
+                Video_Name = "./record/" + datetime.datetime.now().strftime("%Y-%m-%d_%H;%M;%S") + ".avi"
                 print(Video_Name)
                 out = cv2.VideoWriter(Video_Name, fourcc, FPS, (WIDTH, HEIGHT))
             if out.isOpened() is True:
@@ -78,7 +67,7 @@ while (ret):
             if Count > 10:
                 Count = 0
                 if len(Label) >= 9: Label = "Record"
-                else: Label = Label + "."
+                else: Label += "."
             cv2.putText(frame_display, Label, (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 3.0, (0, 0, 255), 3)
         else:
             if out.isOpened() is True: out.release()
